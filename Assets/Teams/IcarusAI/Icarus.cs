@@ -10,13 +10,16 @@ namespace Icarus
 	public class Icarus : BaseSpaceShipController
     {
         [SerializeField] private BehaviorTree _b;
-
-        private SpaceShipView _otherSpaceship;
+        public GameData GameData { get; private set; }
+        public SpaceShipView IcarusShip { get; private set; }
+        public SpaceShipView EnemyShip { get; private set; }
 
 		public override void Initialize(SpaceShipView spaceship, GameData data)
 		{
             base.Initialize(spaceship, data);
-            _otherSpaceship = data.GetSpaceShipForOwner(1 - spaceship.Owner);
+            GameData = data;
+            IcarusShip = spaceship;
+            EnemyShip = data.GetSpaceShipForOwner(1 - spaceship.Owner);
             _b.SetVariableValue("orientation", spaceship.Orientation);
         }
 
