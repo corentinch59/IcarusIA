@@ -28,17 +28,16 @@ namespace Icarus
             if (takeShipRadius.Value)
                 distanceSqr += _icarusShip.Radius * _icarusShip.Radius;
 
-            Debug.Log("Radius : " + distanceSqr);
-
             float distanceFrom = (_enemyShip.Position - _icarusShip.Position).sqrMagnitude;
 
-            Debug.Log("Distance From Enemy" + distanceFrom);
 
             if (distanceFrom <= distanceSqr)
             {
+                Debug.Log("Success");
                 return TaskStatus.Success;
             }
 
+            Debug.Log("Fail");
             return TaskStatus.Failure;
         }
 
