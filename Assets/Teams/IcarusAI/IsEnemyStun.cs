@@ -19,10 +19,10 @@ namespace Icarus
         {
             if (_enemyShip.StunPenaltyCountdown <= 0)
             {
-                return TaskStatus.Success;
+                return TaskStatus.Failure;
             }
 
-            return TaskStatus.Failure;
+            return TaskStatus.Success;
         }
     }
 }
