@@ -34,8 +34,14 @@ namespace Icarus
             float thrust = (float)_b.GetVariable("thrust").GetValue();
             float orientation = (float) _b.GetVariable("orientation").GetValue();
             bool shoot = (bool)_b.GetVariable("shoot").GetValue();
+            if(shoot)
+                _b.SetVariableValue("shoot", false);
             bool dropMine = (bool) _b.GetVariable("dropMine").GetValue();
+            if(dropMine)
+                _b.SetVariableValue("dropMine", false);
             bool fireShockwave = (bool) _b.GetVariable("fireShockwave").GetValue();
+            if(fireShockwave)
+                _b.SetVariableValue("fireShockwave", false);
             return new InputData(thrust, orientation, shoot, dropMine, fireShockwave);
         }
         
