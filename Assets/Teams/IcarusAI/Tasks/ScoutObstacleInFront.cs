@@ -45,14 +45,12 @@ namespace Icarus
             {
                 if (!hit.CompareTag(tag))
                 {
-                    positionFound.Value = hit.transform.position;
                     continue;
                 }
-                Debug.Log("Success");
+                positionFound.Value = hit.transform.position;
                 return TaskStatus.Success;
             }
 
-            Debug.Log("Fail");
             return TaskStatus.Failure;
         }
     }
