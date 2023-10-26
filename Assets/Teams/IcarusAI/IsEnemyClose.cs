@@ -33,11 +33,9 @@ namespace Icarus
 
             if (distanceFrom <= distanceSqr)
             {
-                Debug.Log("Success");
                 return TaskStatus.Success;
             }
 
-            Debug.Log("Fail");
             return TaskStatus.Failure;
         }
 
