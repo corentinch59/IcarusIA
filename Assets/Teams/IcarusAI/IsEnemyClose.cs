@@ -14,11 +14,9 @@ namespace Icarus
 
         private SpaceShipView _icarusShip;
         private SpaceShipView _enemyShip;
-        private GameData _gameData;
 
         public override void OnAwake()
         {
-            _gameData = gameObject.GetComponent<Icarus>().GameData;
             _icarusShip = gameObject.GetComponent<Icarus>().IcarusShip;
             _enemyShip = gameObject.GetComponent<Icarus>().EnemyShip;
         }
