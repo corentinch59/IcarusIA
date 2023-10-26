@@ -27,6 +27,8 @@ namespace Icarus
         public override InputData UpdateInput(SpaceShipView spaceship, GameData data)
 		{
             //bool needShoot = AimingHelpers.CanHit(spaceship, otherSpaceship.Position, otherSpaceship.Velocity, 0.15f);
+            // Set Variables of the blackboard
+            _b.SetVariableValue("energy", spaceship.Energy);
 
             // Get Variables from blackboard
             float thrust = (float)_b.GetVariable("thrust").GetValue();
