@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using DoNotModify;
 using BehaviorDesigner.Runtime;
+using UnityEngine.Serialization;
 
 namespace Icarus
 {
@@ -11,9 +12,11 @@ namespace Icarus
 	public class Icarus : BaseSpaceShipController
     {
         [SerializeField] private BehaviorTree _b;
+        [SerializeField] private bool _drawDebugs;
         public GameData GameData { get; private set; }
         public SpaceShipView IcarusShip { get; private set; }
         public SpaceShipView EnemyShip { get; private set; }
+        public bool GetDrawDebugs => _drawDebugs;
 
         public override void Initialize(SpaceShipView spaceship, GameData data)
 		{

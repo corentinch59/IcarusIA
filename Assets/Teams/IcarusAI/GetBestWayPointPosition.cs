@@ -11,7 +11,7 @@ namespace Icarus
     public class GetBestWayPointPosition : Action
     {
         [BehaviorDesigner.Runtime.Tasks.Tooltip("The position that will get updated")]
-        public SharedVector2 position;
+        public SharedVector2 targetPosition;
 
         private GameData _gameData;
         private SpaceShipView _icarusShip;
@@ -81,7 +81,7 @@ namespace Icarus
             }
 #endif
 
-            position.Value = bestWayPoint.Position;
+            targetPosition.Value = bestWayPoint.Position;
             return TaskStatus.Success;
         }
     }
