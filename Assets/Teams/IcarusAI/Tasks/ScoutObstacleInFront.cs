@@ -32,7 +32,7 @@ namespace Icarus
             Debug.DrawLine(_spaceShip.Position, _spaceShip.Position + _spaceShip.LookAt * boxLength.Value, Color.red);
 #endif
 
-            RaycastHit2D[] hits = Physics2D.BoxCastAll(_spaceShip.Position, new Vector2(_spaceShip.Radius, boxLength.Value), 0.0f, _spaceShip.LookAt);
+            Collider2D[] hits = Physics2D.OverlapBoxAll(_spaceShip.Position + _spaceShip.LookAt * boxLength.Value / 2, new Vector2(_spaceShip.Radius, boxLength.Value), _spaceShip.Orientation);
 
             if (hits.Length <= 0)
             {
@@ -40,9 +40,9 @@ namespace Icarus
                 return TaskStatus.Failure;
             }
 
-            foreach (RaycastHit2D hit in hits)
+            foreach (Collider2D hit in hits)
             {
-                if (!hit.collider.CompareTag(tag))
+                if (!hit.CompareTag(tag))
                 {
                     continue;
                 }

@@ -6,7 +6,7 @@ using DoNotModify;
 namespace Icarus
 {
     [TaskCategory("Icarus")]
-    public class IsEnemyClose : Action
+    public class IsEnemyClose : Conditional
     {
         [BehaviorDesigner.Runtime.Tasks.Tooltip("The distance at which the enemy is considered close")]
         public SharedFloat distance;
@@ -30,6 +30,7 @@ namespace Icarus
 
             float distanceFrom = (_enemyShip.Position - _icarusShip.Position).sqrMagnitude;
 
+            Debug.Log($"{distanceSqr} {distanceFrom}");
 
             if (distanceFrom <= distanceSqr)
             {
