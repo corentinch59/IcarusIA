@@ -15,6 +15,7 @@ namespace Icarus
         }
 
         public SharedFloat boxLength;
+        public SharedVector2 positionFound;
         public TYPE type;
         
         private SpaceShipView _spaceShip;
@@ -44,6 +45,7 @@ namespace Icarus
             {
                 if (!hit.CompareTag(tag))
                 {
+                    positionFound.Value = hit.transform.position;
                     continue;
                 }
                 Debug.Log("Success");
