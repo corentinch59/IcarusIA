@@ -19,7 +19,7 @@ namespace Icarus
 
         public override TaskStatus OnUpdate()
         {
-            float distance = (targetPosition.Value - _icarusShip.Position).sqrMagnitude;
+            float distance = (targetPosition.Value - _icarusShip.Position).magnitude;
 
             return distance <= minimalDistance.Value ? TaskStatus.Success : TaskStatus.Failure;
         }
