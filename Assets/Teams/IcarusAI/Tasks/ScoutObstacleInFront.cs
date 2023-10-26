@@ -15,6 +15,7 @@ namespace Icarus
         }
 
         public SharedFloat boxLength;
+        public SharedFloat addedThickness;
         public SharedVector2 positionFound;
         public TYPE type;
         
@@ -33,11 +34,10 @@ namespace Icarus
             Debug.DrawLine(_spaceShip.Position, _spaceShip.Position + _spaceShip.LookAt * boxLength.Value, Color.red);
 #endif
 
-            Collider2D[] hits = Physics2D.OverlapBoxAll(_spaceShip.Position + _spaceShip.LookAt * boxLength.Value / 2, new Vector2(_spaceShip.Radius, boxLength.Value), _spaceShip.Orientation);
+            Collider2D[] hits = Physics2D.OverlapBoxAll(_spaceShip.Position + _spaceShip.LookAt * boxLength.Value / 2, new Vector2(_spaceShip.Radius + addedThickness.Value, boxLength.Value), _spaceShip.Orientation);
 
             if (hits.Length <= 0)
             {
-                Debug.Log("Fail");
                 return TaskStatus.Failure;
             }
 
