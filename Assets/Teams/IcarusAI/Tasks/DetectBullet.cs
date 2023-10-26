@@ -5,6 +5,7 @@ using DoNotModify;
 
 namespace Icarus
 {
+    [TaskCategory("Icarus")]
     public class DetectBullet : Action
     {
         [BehaviorDesigner.Runtime.Tasks.Tooltip("The distance at which the enemy is considered close")]
