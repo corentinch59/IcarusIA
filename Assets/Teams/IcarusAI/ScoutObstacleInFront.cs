@@ -14,7 +14,7 @@ namespace Icarus
             MINE,
         }
 
-        public SharedVector2 boxSize;
+        public SharedFloat boxLength;
         public TYPE type;
         
         private SpaceShipView _spaceShip;
@@ -29,10 +29,10 @@ namespace Icarus
             string tag = type == TYPE.ASTEROID ? "Asteroid" : "Mine";
 
 #if UNITY_EDITOR
-            Debug.DrawLine(_spaceShip.Position, _spaceShip.Position + _spaceShip.LookAt * boxSize.Value.y, Color.red);
+            Debug.DrawLine(_spaceShip.Position, _spaceShip.Position + _spaceShip.LookAt * boxLength.Value, Color.red);
 #endif
 
-            RaycastHit2D[] hits = Physics2D.BoxCastAll(_spaceShip.Position, new Vector2(_spaceShip.Radius, boxSize.Value.y), 0.0f, _spaceShip.LookAt);
+            RaycastHit2D[] hits = Physics2D.BoxCastAll(_spaceShip.Position, new Vector2(_spaceShip.Radius, boxLength.Value), 0.0f, _spaceShip.LookAt);
 
             if (hits.Length <= 0)
             {
