@@ -81,7 +81,7 @@ namespace Icarus
             }
 #endif
 
-            position = bestWayPoint.Position;
+            position.Value = bestWayPoint.Position;
             return TaskStatus.Success;
         }
     }

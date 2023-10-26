@@ -42,7 +42,7 @@ namespace Icarus
             bool fireShockwave = (bool) _b.GetVariable("fireShockwave").GetValue();
             if(fireShockwave)
                 _b.SetVariableValue("fireShockwave", false);
-            return new InputData(thrust, orientation, shoot, dropMine, fireShockwave);
+            return new InputData(thrust, IcarusShip.Orientation + orientation, shoot, dropMine, fireShockwave);
         }
         
 	}

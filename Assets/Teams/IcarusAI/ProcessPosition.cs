@@ -9,7 +9,6 @@ namespace Icarus
     [TaskCategory("Icarus/Tasks")]
     public class ProcessPosition : Action
     {
-        [BehaviorDesigner.Runtime.Tasks.Tooltip("The position that will get updated")]
         public SharedVector2 position;
 
         [BehaviorDesigner.Runtime.Tasks.Tooltip("The orientation of the ship")]
@@ -25,9 +24,9 @@ namespace Icarus
         public override TaskStatus OnUpdate()
         {
             Vector2 direction = position.Value - _icarusShip.Position;
-            float angle = Vector2.Angle(_icarusShip.LookAt, direction);
+            float angle = Vector2.SignedAngle(_icarusShip.LookAt, direction);
 
-            orientation.Value += angle;
+            orientation.Value = angle;
 
             return TaskStatus.Success;
         }
