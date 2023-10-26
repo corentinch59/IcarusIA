@@ -11,6 +11,8 @@ namespace Icarus
         [BehaviorDesigner.Runtime.Tasks.Tooltip("The distance at which the enemy is considered close")]
         public SharedFloat distance;
 
+        public SharedBool takeShipRadius;
+
         private SpaceShipView _icarusShip;
         private SpaceShipView _enemyShip;
 
@@ -23,6 +25,9 @@ namespace Icarus
         public override TaskStatus OnUpdate()
         {
             float distanceSqr = distance.Value * distance.Value;
+            if (takeShipRadius.Value)
+                distanceSqr += _icarusShip.Radius * _icarusShip.Radius;
+
             float distanceFrom = (_enemyShip.Position - _icarusShip.Position).sqrMagnitude;
 
             if (distanceFrom <= distanceSqr)
