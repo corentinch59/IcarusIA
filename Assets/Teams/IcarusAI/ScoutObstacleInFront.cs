@@ -16,7 +16,6 @@ namespace Icarus
 
         public SharedVector2 boxSize;
         public TYPE type;
-        public Color debugColor;
         
         private SpaceShipView _spaceShip;
 
