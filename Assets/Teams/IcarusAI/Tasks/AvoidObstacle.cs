@@ -32,12 +32,19 @@ namespace Icarus
             if (targetPosition == null)
                 return TaskStatus.Failure;
             
-            UnityEngine.Vector2 dir = (UnityEngine.Vector2)targetPosition.GetValue() - (UnityEngine.Vector2)transform.position;
-            RaycastHit2D hit = Physics2D.CircleCast(transform.position, _icarus.Radius, dir);
-
+            UnityEngine.Vector2 dir = (UnityEngine.Vector2)targetPosition.GetValue() - _icarus.Position;
+            RaycastHit2D hit = Physics2D.CircleCast(
+                _icarus.Position,
+                _icarus.Radius, 
+                dir.normalized, 
+                dir.magnitude,
+                ~LayerMask.GetMask("Player"));
+            
             if (!hit)
                 return TaskStatus.Success;
-
+            
+            Debug.Log("hit tag = " + hit.collider.tag);
+            
             CircleCollider2D colliderToAvoid = null;
             foreach (string tag in raycastTags)
             {
@@ -49,7 +56,7 @@ namespace Icarus
             }
 
             if (colliderToAvoid == null)
-                return TaskStatus.Failure;
+                return TaskStatus.Success;
 
             return
                 TryAvoid(colliderToAvoid) ?
@@ -60,7 +67,7 @@ namespace Icarus
         private bool TryAvoid(CircleCollider2D colliderToAvoid)
         {
             UnityEngine.Vector2 colliderWorldPos = (UnityEngine.Vector2)colliderToAvoid.transform.position + colliderToAvoid.offset;
-            UnityEngine.Vector2 obstacleToShip = (UnityEngine.Vector2)transform.position - colliderWorldPos;
+            UnityEngine.Vector2 obstacleToShip = _icarus.Position - colliderWorldPos;
             UnityEngine.Vector2 obstacleToTarget = (UnityEngine.Vector2)targetPosition.GetValue() - colliderWorldPos;
             
             obstacleToShip.Normalize();
@@ -117,9 +124,9 @@ namespace Icarus
             // dernier essai avant de m'avouer vaincu, calculer par rapport a la normale
             newTargetPos = hit.point + (colliderToAvoid.radius + _icarus.Radius + safeDistanceTolerance) * hit.normal;
             hit = Physics2D.CircleCast(
-                transform.position, 
+                _icarus.Position, 
                 _icarus.Radius,
-                newTargetPos - (UnityEngine.Vector2)transform.position);
+                newTargetPos - _icarus.Position);
 
             if (hit)
                 return false; // Allez nsm hein
@@ -136,9 +143,9 @@ namespace Icarus
             
             // Un autre cast
             hit = Physics2D.CircleCast(
-                transform.position, 
+                _icarus.Position, 
                 _icarus.Radius, 
-                newTargetPos - (UnityEngine.Vector2)transform.position);
+                newTargetPos - _icarus.Position);
 
             return hit ? newTargetPos : new UnityEngine.Vector2(-99, -99);
         }
