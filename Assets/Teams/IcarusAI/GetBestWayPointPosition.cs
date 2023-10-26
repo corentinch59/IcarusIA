@@ -54,13 +54,13 @@ namespace Icarus
                 switch (waypoint.Owner)
                 {
                     case -1:
-                        value = 1;
+                        value = 2;
                         break;
                     case 0:
-                        value = waypoint.Owner == _icarusShip.Owner ? 0 : 2;
+                        value = waypoint.Owner == _icarusShip.Owner ? 0 : 1;
                         break;
                     case 1:
-                        value = waypoint.Owner == _icarusShip.Owner ? 0 : 2;
+                        value = waypoint.Owner == _icarusShip.Owner ? 0 : 1;
                         break;
                 }
                 float score = distance * value;
