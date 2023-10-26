@@ -23,7 +23,10 @@ namespace Icarus
 
         public override TaskStatus OnUpdate()
         {
-            orientation.Value = AimingHelpers.ComputeSteeringOrient(_icarusShip, position.Value);
+            Vector2 direction = position.Value - _icarusShip.Position;
+            float angle = Vector2.SignedAngle(_icarusShip.LookAt, direction);
+
+            orientation.Value = angle;
 
             return TaskStatus.Success;
         }
