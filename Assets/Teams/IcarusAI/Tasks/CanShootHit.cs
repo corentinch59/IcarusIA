@@ -17,12 +17,7 @@ namespace Icarus
 
         public override TaskStatus OnUpdate()
         {
-            if (AimingHelpers.CanHit(_icarusShip, _enemyShip.Position, _enemyShip.Velocity, 0.15f))
-            {
-                return TaskStatus.Success;
-            }
-
-            return TaskStatus.Failure;
+            return AimingHelpers.CanHit(_icarusShip, _enemyShip.Position, _enemyShip.Velocity, 0.15f) ? TaskStatus.Success : TaskStatus.Failure;
         }
     }
 }
