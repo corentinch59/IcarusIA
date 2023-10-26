@@ -126,7 +126,9 @@ namespace Icarus
             hit = Physics2D.CircleCast(
                 _icarus.Position, 
                 _icarus.Radius,
-                newTargetPos - _icarus.Position);
+                (newTargetPos - _icarus.Position).normalized,
+                (newTargetPos - _icarus.Position).magnitude,
+                ~LayerMask.GetMask("Player"));
 
             if (hit)
                 return false; // Allez nsm hein
@@ -145,7 +147,9 @@ namespace Icarus
             hit = Physics2D.CircleCast(
                 _icarus.Position, 
                 _icarus.Radius, 
-                newTargetPos - _icarus.Position);
+                (newTargetPos - _icarus.Position).normalized,
+                (newTargetPos - _icarus.Position).magnitude,
+                ~LayerMask.GetMask("Player"));
 
             return hit ? newTargetPos : new UnityEngine.Vector2(-99, -99);
         }
