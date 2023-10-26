@@ -5,7 +5,7 @@ using DoNotModify;
 
 namespace Icarus
 {
-    [TaskCategory("Icarus/Tasks")]
+    [TaskCategory("Icarus")]
     public class IsEnemyClose : Action
     {
         [BehaviorDesigner.Runtime.Tasks.Tooltip("The distance at which the enemy is considered close")]

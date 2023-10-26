@@ -5,7 +5,7 @@ using DoNotModify;
 
 namespace Icarus
 {
-    [TaskCategory("Icarus/Tasks")]
+    [TaskCategory("Icarus")]
     public class IsEnemyStun : Action
     {
         private SpaceShipView _enemyShip;

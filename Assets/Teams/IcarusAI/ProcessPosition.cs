@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 
 namespace Icarus
 {
-    [TaskCategory("Icarus/Tasks")]
+    [TaskCategory("Icarus")]
     public class ProcessPosition : Action
     {
         public SharedVector2 position;

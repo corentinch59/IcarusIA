@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Icarus
 {
-    [TaskCategory("Icarus/Tasks")]
+    [TaskCategory("Icarus")]
     public class GetBestWayPointPosition : Action
     {
         [BehaviorDesigner.Runtime.Tasks.Tooltip("The position that will get updated")]
