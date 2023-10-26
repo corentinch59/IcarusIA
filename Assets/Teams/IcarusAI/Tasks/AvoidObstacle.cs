@@ -14,6 +14,7 @@ namespace Icarus
         [BehaviorDesigner.Runtime.Tasks.Tooltip("Tags considered as obstacles.")]
         public string[] raycastTags = {"Asteroid"};
 
+        public float wallDistanceCheck;
         public float safeDistanceTolerance;
         
         private Icarus _icarusController;
@@ -32,6 +33,31 @@ namespace Icarus
             if (targetPosition == null)
                 return TaskStatus.Failure;
             
+            // Check mur avant tout
+            RaycastHit2D hitwall = Physics2D.CircleCast(
+                _icarus.Position,
+                _icarus.Radius, 
+                _icarus.LookAt, 
+                wallDistanceCheck,
+                LayerMask.GetMask("Wall"));
+
+            if (_icarusController.GetDrawDebugs)
+                Debug.DrawRay(_icarus.Position, wallDistanceCheck * _icarus.LookAt);
+            
+            if (hitwall && Vector2.Dot(_icarus.LookAt, _icarus.Velocity) < 0.01f)
+            {
+                Vector2 newTarget = hitwall.point + (_icarus.Radius + safeDistanceTolerance) * hitwall.normal;
+                targetPosition.SetValue(newTarget);
+                if (_icarusController.GetDrawDebugs)
+                    CustomDebug.DrawWireSphere(
+                        newTarget,
+                        0.2f,
+                        Color.green,
+                        Time.deltaTime);
+                return TaskStatus.Success;
+            }
+            
+            
             UnityEngine.Vector2 dir = (UnityEngine.Vector2)targetPosition.GetValue() - _icarus.Position;
             RaycastHit2D hit = Physics2D.CircleCast(
                 _icarus.Position,
@@ -43,19 +69,17 @@ namespace Icarus
             if (!hit)
                 return TaskStatus.Success;
             
-            Debug.Log("hit tag = " + hit.collider.tag);
-            
             CircleCollider2D colliderToAvoid = null;
             foreach (string tag in raycastTags)
             {
                 if (!hit.collider.CompareTag(tag))
                     continue;
-                
-                colliderToAvoid = (CircleCollider2D)hit.collider;
+
+                colliderToAvoid = hit.collider as CircleCollider2D;
                 break;
             }
 
-            if (colliderToAvoid == null)
+            if (colliderToAvoid == null) 
                 return TaskStatus.Success;
 
             return
@@ -69,9 +93,19 @@ namespace Icarus
             UnityEngine.Vector2 colliderWorldPos = (UnityEngine.Vector2)colliderToAvoid.transform.position + colliderToAvoid.offset;
             UnityEngine.Vector2 obstacleToShip = _icarus.Position - colliderWorldPos;
             UnityEngine.Vector2 obstacleToTarget = (UnityEngine.Vector2)targetPosition.GetValue() - colliderWorldPos;
-            
+
             obstacleToShip.Normalize();
             obstacleToTarget.Normalize();
+            
+            if (_icarusController.GetDrawDebugs)
+            {
+                Debug.DrawRay(colliderToAvoid.transform.position, obstacleToShip, Color.yellow);
+                Debug.DrawRay(colliderToAvoid.transform.position, obstacleToTarget, Color.yellow);
+                Debug.LogWarning(obstacleToShip.x + ", " + obstacleToShip.y);
+                Debug.LogWarning(Mathf.CeilToInt(obstacleToShip.x) + ", " + Mathf.CeilToInt(obstacleToShip.y));
+                Debug.LogWarning(obstacleToTarget.x + ", " + obstacleToTarget.y);
+                Debug.LogWarning(Mathf.CeilToInt(obstacleToTarget.x) + ", " + Mathf.CeilToInt(obstacleToTarget.y));
+            }
 
             // On regarde quel quartier de l'obstacle on partage avec le target.
             // (1,1) = meme quartier,
@@ -80,8 +114,8 @@ namespace Icarus
             // (0,0) = quartiers opposes.
             Vector2Int normalizedOffset = 
                 new(
-                Mathf.CeilToInt(obstacleToShip.x) & Mathf.CeilToInt(obstacleToTarget.x),
-                Mathf.CeilToInt(obstacleToShip.y) & Mathf.CeilToInt(obstacleToTarget.y)
+                Mathf.CeilToInt(obstacleToShip.x) == Mathf.CeilToInt(obstacleToTarget.x) ? 1 : 0,
+                Mathf.CeilToInt(obstacleToShip.y) == Mathf.CeilToInt(obstacleToTarget.y) ? 1 : 0
                 );
 
             if (_icarusController.GetDrawDebugs)
@@ -98,11 +132,17 @@ namespace Icarus
             if (normalizedOffset != Vector2Int.zero)
             {
                 obstacleToShip *= normalizedOffset;
-                newTargetPos = CalculateNewTargetPos(colliderWorldPos, colliderToAvoid, obstacleToShip, out hit);
+                newTargetPos = CalculateNewTargetPos(colliderWorldPos, colliderToAvoid as CircleCollider2D, obstacleToShip, out hit);
                 
                 if (newTargetPos != new UnityEngine.Vector2(-99, -99))
                 {
                     targetPosition.SetValue(newTargetPos);
+                    if (_icarusController.GetDrawDebugs)
+                        CustomDebug.DrawWireSphere(
+                            newTargetPos,
+                            0.2f,
+                            Color.green,
+                            Time.deltaTime);
                     return true;
                 }
             }
@@ -111,11 +151,17 @@ namespace Icarus
                 for (int i = 1; i < 3; i++)
                 {
                     obstacleToShip *= new UnityEngine.Vector2(i % 2, (i - 1) % 2);
-                    newTargetPos = CalculateNewTargetPos(colliderWorldPos, colliderToAvoid, obstacleToShip, out hit);
+                    newTargetPos = CalculateNewTargetPos(colliderWorldPos, colliderToAvoid as CircleCollider2D, obstacleToShip, out hit);
 
                     if (newTargetPos != new UnityEngine.Vector2(-99, -99))
                     {
                         targetPosition.SetValue(newTargetPos);
+                        if (_icarusController.GetDrawDebugs)
+                            CustomDebug.DrawWireSphere(
+                                newTargetPos,
+                                0.2f,
+                                Color.green,
+                                Time.deltaTime);
                         return true;
                     }
                 }
@@ -134,23 +180,31 @@ namespace Icarus
                 return false; // Allez nsm hein
             
             targetPosition.SetValue(newTargetPos);
+            if (_icarusController.GetDrawDebugs)
+                CustomDebug.DrawWireSphere(
+                    newTargetPos,
+                    0.2f,
+                    Color.green,
+                    Time.deltaTime);
             return true;
         }
 
         private UnityEngine.Vector2 CalculateNewTargetPos(UnityEngine.Vector2 colliderWorldPos, CircleCollider2D colliderToAvoid, UnityEngine.Vector2 obstacleToShip, out RaycastHit2D hit)
         {
+            obstacleToShip.Normalize();
+            
             UnityEngine.Vector2 newTargetPos =
                 colliderWorldPos +
                 (colliderToAvoid.radius + _icarus.Radius + safeDistanceTolerance) * obstacleToShip;
             
             // Un autre cast
             hit = Physics2D.CircleCast(
-                _icarus.Position, 
-                _icarus.Radius, 
+                _icarus.Position,
+                _icarus.Radius,
                 (newTargetPos - _icarus.Position).normalized,
                 (newTargetPos - _icarus.Position).magnitude,
                 ~LayerMask.GetMask("Player"));
-
+            
             return hit ? newTargetPos : new UnityEngine.Vector2(-99, -99);
         }
     }
