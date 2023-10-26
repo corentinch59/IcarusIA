@@ -25,7 +25,7 @@ namespace Icarus
             float distanceSqr = distance.Value * distance.Value;
             float distanceFrom = (_enemyShip.Position - _icarusShip.Position).sqrMagnitude;
 
-            if (distanceSqr <= distanceFrom)
+            if (distanceFrom <= distanceSqr)
             {
                 return TaskStatus.Success;
             }
