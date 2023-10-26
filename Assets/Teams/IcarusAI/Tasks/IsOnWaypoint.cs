@@ -21,7 +21,7 @@ namespace Icarus
         {
             float distance = (targetPosition.Value - _icarusShip.Position).sqrMagnitude;
 
-            return distance <= minimalDistance.Value * minimalDistance.Value ? TaskStatus.Success : TaskStatus.Failure;
+            return distance <= minimalDistance.Value ? TaskStatus.Success : TaskStatus.Failure;
         }
     }
 }
