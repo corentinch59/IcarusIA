@@ -51,7 +51,7 @@ namespace Icarus
                 if (_icarusController.GetDrawDebugs)
                     CustomDebug.DrawWireSphere(
                         newTarget,
-                        0.2f,
+                        0.5f,
                         Color.green,
                         Time.deltaTime);
                 return TaskStatus.Success;
@@ -101,10 +101,10 @@ namespace Icarus
             {
                 Debug.DrawRay(colliderToAvoid.transform.position, obstacleToShip, Color.yellow);
                 Debug.DrawRay(colliderToAvoid.transform.position, obstacleToTarget, Color.yellow);
-                Debug.LogWarning(obstacleToShip.x + ", " + obstacleToShip.y);
-                Debug.LogWarning(Mathf.CeilToInt(obstacleToShip.x) + ", " + Mathf.CeilToInt(obstacleToShip.y));
-                Debug.LogWarning(obstacleToTarget.x + ", " + obstacleToTarget.y);
-                Debug.LogWarning(Mathf.CeilToInt(obstacleToTarget.x) + ", " + Mathf.CeilToInt(obstacleToTarget.y));
+                Debug.LogWarning("ObstacleToShip : " +obstacleToShip.x + ", " + obstacleToShip.y);
+                Debug.LogWarning("ObstacleToShip Ceiled : " + Mathf.CeilToInt(obstacleToShip.x) + ", " + Mathf.CeilToInt(obstacleToShip.y));
+                Debug.LogWarning("ObstacleToTarget : " + obstacleToTarget.x + ", " + obstacleToTarget.y);
+                Debug.LogWarning("ObstacleToTarget Ceiled : " + Mathf.CeilToInt(obstacleToTarget.x) + ", " + Mathf.CeilToInt(obstacleToTarget.y));
             }
 
             // On regarde quel quartier de l'obstacle on partage avec le target.
@@ -140,10 +140,14 @@ namespace Icarus
                     if (_icarusController.GetDrawDebugs)
                         CustomDebug.DrawWireSphere(
                             newTargetPos,
-                            0.2f,
+                            0.5f,
                             Color.green,
                             Time.deltaTime);
                     return true;
+                }
+                else
+                {
+                    Debug.LogError("Icarus : Vector2(-99, -99)");
                 }
             }
             else
@@ -159,10 +163,14 @@ namespace Icarus
                         if (_icarusController.GetDrawDebugs)
                             CustomDebug.DrawWireSphere(
                                 newTargetPos,
-                                0.2f,
+                                0.5f,
                                 Color.green,
                                 Time.deltaTime);
                         return true;
+                    }
+                    else
+                    {
+                        Debug.LogError("Icarus : Vector2(-99, -99)");
                     }
                 }
             }
@@ -183,7 +191,7 @@ namespace Icarus
             if (_icarusController.GetDrawDebugs)
                 CustomDebug.DrawWireSphere(
                     newTargetPos,
-                    0.2f,
+                    0.5f,
                     Color.green,
                     Time.deltaTime);
             return true;
@@ -205,7 +213,7 @@ namespace Icarus
                 (newTargetPos - _icarus.Position).magnitude,
                 ~LayerMask.GetMask("Player"));
             
-            return hit ? newTargetPos : new UnityEngine.Vector2(-99, -99);
+            return newTargetPos;
         }
     }
 }
